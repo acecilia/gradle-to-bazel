@@ -1,0 +1,32 @@
+load("@rules_java//java:defs.bzl", "java_binary", "java_library", "java_test")
+
+java_library(
+    name = "hello_world_lib",
+    srcs = ["src/main/java/com/example/HelloWorld.java"],
+    deps = [
+        "@test_explorer_maven//:com_google_guava_guava",
+    ],
+)
+
+java_binary(
+    name = "hello_world",
+    main_class = "com.example.HelloWorld",
+    runtime_deps = [":hello_world_lib"],
+)
+
+java_test(
+    name = "hello_world_test",
+    srcs = ["src/test/java/com/example/HelloWorldTest.java"],
+    test_class = "com.example.HelloWorldTest",
+    use_testrunner = False,
+    main_class = "org.junit.platform.console.ConsoleLauncher",
+    args = ["--select-class=com.example.HelloWorldTest"],
+    deps = [
+        ":hello_world_lib",
+        "@test_explorer_maven//:org_junit_jupiter_junit_jupiter_api",
+    ],
+    runtime_deps = [
+        "@test_explorer_maven//:org_junit_jupiter_junit_jupiter_engine",
+        "@test_explorer_maven//:org_junit_platform_junit_platform_console",
+    ],
+)

@@ -1,0 +1,33 @@
+module(
+    name = "rules_gradle_cache_demo",
+    version = "0.0.0",
+)
+
+bazel_dep(name = "rules_java", version = "8.13.0")
+bazel_dep(name = "rules_jvm_external", version = "6.6")
+bazel_dep(name = "rules_gcs", version = "1.0.1")
+
+# Use local clone of rules_jvm_external for development
+local_path_override(
+    module_name = "rules_jvm_external",
+    path = "../../rules_jvm_external",
+)
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    name = "test_explorer_maven",
+    artifacts = [
+        "org.junit.jupiter:junit-jupiter-engine:5.11.4",
+        "org.junit.jupiter:junit-jupiter-api:5.11.4", 
+        "org.junit.platform:junit-platform-console:1.11.4",
+        "com.squareup.okhttp3:okhttp:4.12.0",
+        "com.google.guava:guava:999.0.0-HEAD-jre-SNAPSHOT",
+    ],
+    repositories = [
+        "https://repo1.maven.org/maven2",
+        "https://oss.sonatype.org/content/repositories/snapshots",
+    ],
+    resolver = "gradle",
+    lock_file = "//:maven_install.json",
+)
+use_repo(maven, "test_explorer_maven")

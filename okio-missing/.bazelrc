@@ -1,0 +1,6 @@
+# Recommended optimization
+common --experimental_repository_cache_hardlinks
+
+# Java toolchain configuration
+build --java_runtime_version=remotejdk_17
+build --tool_java_runtime_version=remotejdk_17
