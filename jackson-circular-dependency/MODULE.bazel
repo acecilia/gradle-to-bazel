@@ -1,0 +1,27 @@
+module(
+    name = "okio_missing",
+    version = "0.0.0",
+)
+
+bazel_dep(name = "rules_java", version = "8.13.0")
+bazel_dep(name = "rules_jvm_external", version = "6.6")
+
+git_override(
+    module_name = "rules_jvm_external",
+    remote = "https://github.com/bazelbuild/rules_jvm_external.git",
+    commit = "a88c56ef91452adcdcc7af5e95bb335b0c2d9bc8",
+)
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    name = "test_explorer_maven",
+    artifacts = [
+        "com.fasterxml.jackson:jackson-bom:2.14.2",
+    ],
+    repositories = [
+        "https://repo1.maven.org/maven2",
+    ],
+    resolver = "gradle",
+    lock_file = "//:maven_install.json",
+)
+use_repo(maven, "test_explorer_maven")
