@@ -1,0 +1,33 @@
+module(
+    name = "okio_missing",
+    version = "0.0.0",
+)
+
+bazel_dep(name = "rules_java", version = "8.13.0")
+bazel_dep(name = "rules_jvm_external", version = "6.6")
+
+# git_override(
+#     module_name = "rules_jvm_external",
+#     remote = "https://github.com/bazelbuild/rules_jvm_external.git",
+#     commit = "a88c56ef91452adcdcc7af5e95bb335b0c2d9bc8",
+# )
+
+# Use local clone of rules_jvm_external for development
+local_path_override(
+    module_name = "rules_jvm_external",
+    path = "../../rules_jvm_external",
+)
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    name = "test_explorer_maven",
+    artifacts = [
+        "com.google.guava:guava:999.0.0-HEAD-jre-SNAPSHOT",
+    ],
+    repositories = [
+        "https://oss.sonatype.org/content/repositories/snapshots",
+    ],
+    resolver = "gradle",
+    lock_file = "//:maven_install.json",
+)
+use_repo(maven, "test_explorer_maven")

@@ -1,0 +1,16 @@
+apply plugin: 'java'
+
+repositories {
+    maven {
+        url "https://repo1.maven.org/maven2"
+        allowInsecureProtocol = false
+    }
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+        allowInsecureProtocol = false
+    }
+}
+
+dependencies {
+    implementation("com.google.guava:guava:999.0.0-HEAD-jre-SNAPSHOT")
+}
